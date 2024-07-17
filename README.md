@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# Account-Book React App
+
+This is an online Single-page application with React 16 to provide accounting function for personal users.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Technology stacks
+
+Frontend and UI: React 16, Context, High order component
+
+React tool: Ionicon, ReactRouter, Recharts, Bootstrap
+
+Backend and testing: Jest, Enzyme, JsonServer, Axios
 
 ## Available Scripts
 
