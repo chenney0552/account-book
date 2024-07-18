@@ -12,6 +12,12 @@ React tool: Ionicon, ReactRouter, Recharts, Bootstrap
 
 Backend and testing: Jest, Enzyme, JsonServer, Axios
 
+## Develop Path
+
+The develop path can be divided into four phases from design to deploy on the Azure.
+
+![Develop Cycle](https://drive.google.com/file/d/1vzsSmq32CgF44suJyO02nFkruMbEoIu8/view)
+
 ## Available Scripts
 
 In the project directory, you can run:
