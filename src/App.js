@@ -1,8 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import PriceList from './components/PriceList';
+
 const items = [
   {
     "id": 1,
@@ -12,7 +12,8 @@ const items = [
     "category": {
       "id": "1",
       "name": "Travel",
-      "type": "outcome"
+      "type": "outcome",
+      "iconName": "ios-plane"
     }
   },
   {
@@ -23,7 +24,8 @@ const items = [
     "category": {
       "id": "1",
       "name": "Travel",
-      "type": "outcome"
+      "type": "outcome",
+      "iconName": "ios-plane"
     }
   }
 ]
@@ -32,9 +34,6 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <header className='App-header'>
-          <h1 className='App-title'>Welcome to React</h1>
-        </header>
         <PriceList 
         items={items} 
         onModifyItem={(item)=>{alert(item.id)}}
