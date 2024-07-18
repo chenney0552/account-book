@@ -16,7 +16,7 @@ Backend and testing: Jest, Enzyme, JsonServer, Axios
 
 The develop path can be divided into four phases from design to deploy on the Azure.
 
-![Develop Cycle](https://drive.google.com/file/d/1vzsSmq32CgF44suJyO02nFkruMbEoIu8/view)
+![Develop Cycle](https://github.com/chenney0552/account-book/blob/master/public/develop-flow.jpg)
 
 ## Available Scripts
 
