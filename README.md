@@ -18,6 +18,18 @@ The develop path can be divided into four phases from design to deploy on the Az
 
 ![Develop Cycle](https://github.com/chenney0552/account-book/blob/master/public/develop-flow.jpg)
 
+## Web Page Prototype of the Application
+
+There are four main components in this application.
+
+![Main Page](https://github.com/chenney0552/account-book/blob/master/public/main-page.png)
+
+![Main Page With Graph](https://github.com/chenney0552/account-book/blob/master/public/main-page-with-graph.png)
+
+![Edit Page](https://github.com/chenney0552/account-book/blob/master/public/edit-page.png)
+
+![Calender Page](https://github.com/chenney0552/account-book/blob/master/public/calender-page.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
