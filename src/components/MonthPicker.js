@@ -40,7 +40,7 @@ class MonthPicker extends Component {
         const {selectedYear, selectedMonth} = this.state
         const {isOpen} = this.state
         const monthRange = range(12, 1)
-        const yearRange = range(9, -4).map(number => number + year)
+        const yearRange = range(9, -4).map(number => number + selectedYear)
         return (
         <div className='dropdown month-picker-component'>
             <h4>Select month</h4>
