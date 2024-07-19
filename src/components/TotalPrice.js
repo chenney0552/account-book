@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types'
 
-const TotalPrice = ({income, outcome}) => {
+const TotalPrice = ({income, outcome}) => (
     <div className="row">
         <div className="col">
             <h5 className="income">income: <span>{income}</span></h5>
@@ -10,7 +10,7 @@ const TotalPrice = ({income, outcome}) => {
             <h5 className="outcome">outcome: <span>{outcome}</span></h5>
         </div>
     </div>
-}
+)
 
 
 TotalPrice.propTypes = {
