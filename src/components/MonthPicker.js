@@ -7,7 +7,8 @@ class MonthPicker extends Component {
         super(props)
         this.state = {
             isOpen: false,
-            selectedYear: this.props.year
+            selectedYear: this.props.year,
+            selectedMonth: this.props.month
         }
     }
 
@@ -28,14 +29,15 @@ class MonthPicker extends Component {
     selectMonth = (event, monthNumber) => {
         event.preventDefault()
         this.setState({
-            isOpen: false
+            isOpen: false,
+            selectedMonth: monthNumber
         })
         this.props.onChange(this.state.selectedYear, monthNumber)
     }
 
     render() {
         const {year, month} = this.props
-        const {selectedYear} = this.state
+        const {selectedYear, selectedMonth} = this.state
         const {isOpen} = this.state
         const monthRange = range(12, 1)
         const yearRange = range(9, -4).map(number => number + year)
@@ -46,7 +48,7 @@ class MonthPicker extends Component {
                 className='btn btn-lg btn-secondary dropdown-toggle'
                 onClick={this.toggleDropdown}
             >
-                {`${year} year ${padLeft(month)} month`}
+                {`${selectedYear} year ${padLeft(selectedMonth)} month`}
             </button>
             { isOpen && 
                 <div className='dropdown-menu' style={{display: 'block'}}>
