@@ -19,7 +19,7 @@ const categories = {
     },
     "2" : {
         "id": "2",
-        "name": "Travel",
+        "name": "StockIncome",
         "type": "income",
         "iconName": "logo-yen"
     }
