@@ -36,6 +36,13 @@ The application could be divided into components which is responsible for diplay
 
 ![Component Layered Design](https://github.com/chenney0552/account-book/blob/02_static_page/public/Component-Layer-Design.png)
 
+## State Flow Design
+
+The state of the application is maintained in the container (Home.js)
+
+![State Flow Design](https://github.com/chenney0552/account-book/blob/03_add_state/public/state-flow-chart.png)
+
+
 ## Available Scripts
 
 In the project directory, you can run:
