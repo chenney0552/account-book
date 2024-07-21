@@ -163,7 +163,7 @@ export default class Home extends Component {
                     CHART VIEW
                 </Tab>
             </Tabs>
-            <ViewTab activeTab={tabView} onTabChange={this.changeView} />
+            
             <CreateBtn onClick={this.createItem}/>
             { tabView === LIST_VIEW && 
                 <PriceList
