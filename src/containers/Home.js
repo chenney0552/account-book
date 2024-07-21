@@ -8,6 +8,8 @@ import ViewTab from "../components/ViewTab";
 import MonthPicker from "../components/MonthPicker";
 import CreateBtn from "../components/CreateBtn";
 import TotalPrice from "../components/TotalPrice";
+import {Tabs, Tab} from "../components/Tabs"
+import Ionicon from 'react-ionicons'
 import { tab } from "@testing-library/user-event/dist/tab";
 
 const categories = {
@@ -57,18 +59,20 @@ const newItem = {
     "cid": 1
 }
 
+const tabsText = [LIST_VIEW, CHART_VIEW]
+
 export default class Home extends Component {
     constructor(props) {
         super(props)
         this.state = {
             items,
             currentDate: parseToYearAndMonth(),
-            tabView: LIST_VIEW,
+            tabView: tabsText[0],
         }
     }
-    changeView = (view) => {
+    changeView = (index) => {
         this.setState({
-            tabView: view,
+            tabView: tabsText[index],
         })
     }
     changeDate = (year, month) => {
@@ -139,6 +143,26 @@ export default class Home extends Component {
             </div>
         </header>
         <div className="content-area py-3 px-3">
+            <Tabs activeIndex={0} onTabChange={this.changeView}>
+                <Tab>
+                    <Ionicon
+                        className="rounded-circle mr-2"
+                        fontSize="25px"
+                        color={'#007bff'}
+                        icon='ios-paper'
+                    />
+                    List View
+                </Tab>
+                <Tab>
+                    <Ionicon
+                        className="rounded-circle mr-2"
+                        fontSize="25px"
+                        color={'#007bff'}
+                        icon='ios-pie'
+                    />
+                    CHART VIEW
+                </Tab>
+            </Tabs>
             <ViewTab activeTab={tabView} onTabChange={this.changeView} />
             <CreateBtn onClick={this.createItem}/>
             { tabView === LIST_VIEW && 
