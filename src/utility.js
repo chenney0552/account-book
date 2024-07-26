@@ -37,3 +37,7 @@ export const flatternArr = (arr) => {
         return map
     }, {})
 }
+
+export const toArray = (obj) => {
+    return Object.values(obj);
+}

@@ -13,45 +13,10 @@ import Ionicon from 'react-ionicons'
 import { tab } from "@testing-library/user-event/dist/tab";
 import { AppContext } from "../App";
 import withContext from "../WithContext";
+import { withRouter } from "react-router-dom";
+import { toArray } from "../utility";
 
-const categories = {
-    "1" : {
-        "id": "1",
-        "name": "Travel",
-        "type": "outcome",
-        "iconName": "ios-plane"
-    },
-    "2" : {
-        "id": "2",
-        "name": "StockIncome",
-        "type": "income",
-        "iconName": "logo-yen"
-    }
-}
-
-const items = [
-    {
-      "id": 1,
-      "title": "Travel",
-      "price": 200,
-      "date": "2018-09-10",
-      "cid": 1
-    },
-    {
-      "id": 2,
-      "title": "Travel",
-      "price": 400,
-      "date": "2018-09-10",
-      "cid": 1
-    },
-    {
-      "id": 3,
-      "title": "Stock Income",
-      "price": 400,
-      "date": "2018-09-10",
-      "cid": 2
-    }  
-]
+const items = []
 
 const newItem = {
     "id": 4,
@@ -83,32 +48,19 @@ class Home extends Component {
         })
     }
     modifyItem = (modifiedItem) => {
-        const modifiedItems = this.state.items.map(item => {
-            if (item.id === modifiedItem.id) {
-                return {...item, title: 'new title'} 
-            } else {
-                return item
-            }
-        })
-        this.setState({
-            items: modifiedItems
-        })
+        this.props.history.push(`/edit/${modifiedItem.id}`)
     }
     createItem = () => {
-        this.setState({
-            items: [newItem, ...this.state.items]
-        })
+        this.props.history.push('/create')
     }
     deleteItem = (deletedItem) => {
-        const filteredItems = this.state.items.filter(item => item.id !== deletedItem.id)
-        this.setState({
-            items: filteredItems
-        })
+        this.props.actions.deleteItem(deletedItem)
     }
     render() {
       const {data} = this.props
-      console.log(data)
-      const { items, currentDate, tabView } = this.state
+      const { currentDate, tabView } = this.state
+      const items = toArray(data.items)
+      const categories = toArray(data.categories)
       const itemsWithCategory = items.map(item => {
         item.category = categories[item.cid]
         return item
@@ -117,10 +69,14 @@ class Home extends Component {
     })
       let totalIncome = 0, totalOutcome = 0
       itemsWithCategory.forEach(item => {
-          if (item.category.type === TYPE_OUTCOME) {
+          console.log(item)
+          if (item.category !== null && item.category.type === TYPE_OUTCOME) {
               totalOutcome += item.price
           } else {
-              totalIncome += item.price
+              if (item.category !== null) {
+                totalIncome += item.price
+              }
+              
           }
     })
     
@@ -184,4 +140,4 @@ class Home extends Component {
   }
 }
 
-export default withContext(Home)
+export default withRouter(withContext(Home))

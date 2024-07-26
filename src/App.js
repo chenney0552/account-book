@@ -15,12 +15,22 @@ class App extends Component {
       items: flatternArr(testItems),
       categories: flatternArr(testCategories)
     }
+    this.actions = {
+      deleteItem: (item) => {
+        console.log('deleteItem called', item.id)
+        delete this.state.items[item.id]
+        this.setState({
+          items: this.state.items
+        })
+      }
+    }
   }
 
   render() {
     return (
       <AppContext.Provider value={{
-        state: this.state
+        state: this.state,
+        actions: this.actions,
       }}>
       <Router>
         <div className='App'>

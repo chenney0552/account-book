@@ -73,15 +73,6 @@ export const testCategories = [
     },
     {
       "title": "理财收入",
-      "price": 1000,
-      "date": "2018-08-11",
-      "monthCategory": "2018-8",
-      "id": "_1fg1wme63",
-      "cid": "11",
-      "timestamp": 1533945600000
-    },
-    {
-      "title": "理财收入",
       "price": 300,
       "date": "2018-11-15",
       "monthCategory": "2018-11",
