@@ -6,19 +6,31 @@ import {testCategories} from '../testData'
 import PriceForm from "../components/PriceForm";
 import { AppContext } from "../App";
 import withContext from "../WithContext";
+const tabsText = [TYPE_OUTCOME, TYPE_INCOME]
 
 class Create extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            selectedTab: TYPE_OUTCOME,
+            selectedCategory: null,
+        }
+    }
+
+    tabChange = (index) => {
+        this.setState({
+            selectedTab: tabsText[index]
+        })
     }
 
     render() {
         const { data } = this.props
-        console.log(data)
-        const filterCategories = testCategories.filter(category => category.type === TYPE_OUTCOME)
+        const {items, categories} = data
+        const {selectedTab} = this.state
+        const filterCategories = testCategories.filter(category => category.type === selectedTab)
         return (
                 <div className="create-page py-3 px-3 rounded mt-3" style={{background: '#fff'}}>
-                    <Tabs activeIndex={0} onTabChange={() => {}}>
+                    <Tabs activeIndex={0} onTabChange={this.tabChange}>
                         <Tab>outcome</Tab>
                         <Tab>income</Tab>
                     </Tabs>
