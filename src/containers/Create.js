@@ -40,7 +40,8 @@ class Create extends React.Component {
         if (!isEditMode) {
             this.props.actions.createItem(data, this.state.selectedCategory.id)
         } else {
-
+            // update
+            this.props.actions.updateItem(data, this.state.selectedCategory.id)
         }
         this.props.history.push('/')
     }
