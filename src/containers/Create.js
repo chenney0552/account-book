@@ -12,9 +12,11 @@ const tabsText = [TYPE_OUTCOME, TYPE_INCOME]
 class Create extends React.Component {
     constructor(props) {
         super(props)
+        const {id} = props.match.params
+        const {categories, items} = props.data
         this.state = {
-            selectedTab: TYPE_OUTCOME,
-            selectedCategory: null,
+            selectedTab: (id && items[id]) ? categories[items[id].cid].type : TYPE_OUTCOME,
+            selectedCategory: (id && items[id]) ? categories[items[id].cid] : null,
         }
     }
 
@@ -46,19 +48,24 @@ class Create extends React.Component {
     render() {
         const { data } = this.props
         const {items, categories} = data
-        const {selectedTab} = this.state
+        const { id } = this.props.match.params
+        const editItem = (id && items[id]) ? items[id] : {}
+        const {selectedTab, selectedCategory} = this.state
         const filterCategories = testCategories.filter(category => category.type === selectedTab)
+        const tabIndex = tabsText.findIndex(text => text === selectedTab)
         return (
                 <div className="create-page py-3 px-3 rounded mt-3" style={{background: '#fff'}}>
-                    <Tabs activeIndex={0} onTabChange={this.tabChange}>
+                    <Tabs activeIndex={tabIndex} onTabChange={this.tabChange}>
                         <Tab>outcome</Tab>
                         <Tab>income</Tab>
                     </Tabs>
                     <CategorySelect categories={filterCategories} 
-                    onSelectCategory={this.selectCategory}></CategorySelect>
+                    onSelectCategory={this.selectCategory}
+                    selectedCategory={selectedCategory}></CategorySelect>
                     <PriceForm
                         onFormSubmit={this.submitForm}
                         onCancelSubmit={this.cancelSubmit}
+                        item={editItem}
                     />
                 </div>
         )
