@@ -5,7 +5,7 @@ import Home from './containers/Home';
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import Create from './containers/Create';
 import { testItems, testCategories } from './testData';
-import { flatternArr } from './utility';
+import { flatternArr, ID, parseToYearAndMonth } from './utility';
 
 export const AppContext = React.createContext()
 class App extends Component {
@@ -22,6 +22,17 @@ class App extends Component {
         this.setState({
           items: this.state.items
         })
+      },
+      createItem: (data, categoryId) => {
+        const newId = ID()
+        const parsedDate = parseToYearAndMonth(data.date)
+        data.monthCategory = `${parsedDate.year}-${parsedDate.month}`
+        data.timestamp = new Date(data.date).getTime()
+        const newItem = {...data, id: newId, cid: categoryId}
+        this.setState({
+          items: {...this.state.items, [newId]: newItem}
+        })
+        console.log(newItem)
       }
     }
   }

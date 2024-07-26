@@ -41,3 +41,7 @@ export const flatternArr = (arr) => {
 export const toArray = (obj) => {
     return Object.values(obj);
 }
+
+export const ID = () => {
+    return '_' + Math.random().toString(36).substring(2, 9);
+}

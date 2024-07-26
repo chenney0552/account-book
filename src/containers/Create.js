@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { Tabs, Tab } from "../components/Tabs";
 import CategorySelect from "../components/CategorySelect";
 import { TYPE_INCOME, TYPE_OUTCOME } from "../utility";
@@ -23,6 +24,25 @@ class Create extends React.Component {
         })
     }
 
+    selectCategory = (category) => {
+        this.setState({
+            selectedCategory: category
+        })
+    }
+
+    cancelSubmit = () => {
+        this.props.history.push('/')
+    }
+
+    submitForm = (data, isEditMode) => {
+        if (!isEditMode) {
+            this.props.actions.createItem(data, this.state.selectedCategory.id)
+        } else {
+
+        }
+        this.props.history.push('/')
+    }
+
     render() {
         const { data } = this.props
         const {items, categories} = data
@@ -34,14 +54,15 @@ class Create extends React.Component {
                         <Tab>outcome</Tab>
                         <Tab>income</Tab>
                     </Tabs>
-                    <CategorySelect categories={filterCategories} onSelectCategory={() => {}}></CategorySelect>
+                    <CategorySelect categories={filterCategories} 
+                    onSelectCategory={this.selectCategory}></CategorySelect>
                     <PriceForm
-                        onFormSubmit={() => {}}
-                        onCancelSubmit={() => {}}
+                        onFormSubmit={this.submitForm}
+                        onCancelSubmit={this.cancelSubmit}
                     />
                 </div>
         )
     }
 }
 
-export default withContext(Create)
+export default withRouter(withContext(Create))
