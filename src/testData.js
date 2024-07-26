@@ -70,23 +70,5 @@ export const testCategories = [
       "id": "_jjfice21k",
       "cid": "3",
       "timestamp": 1534723200000
-    },
-    {
-      "title": "理财收入",
-      "price": 300,
-      "date": "2018-11-15",
-      "monthCategory": "2018-11",
-      "id": "_qryggm5y8",
-      "cid": "12",
-      "timestamp": 1534291200000
-    },
-    {
-      "title": "请别人吃饭",
-      "price": 300,
-      "date": "2018-11-15",
-      "monthCategory": "2018-11",
-      "id": "_qryggm511",
-      "cid": "3",
-      "timestamp": 1534291200000
     }
   ]
