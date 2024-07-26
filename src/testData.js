@@ -50,7 +50,7 @@ export const testCategories = [
       "date": "2018-08-15",
       "monthCategory": "2018-8",
       "id": "_kly1klf4g",
-      "cid": "1",
+      "cid": "3",
       "timestamp": 1534291200000
     },
     {
@@ -59,7 +59,7 @@ export const testCategories = [
       "date": "2018-08-18",
       "monthCategory": "2018-8",
       "id": "_bd16bjeen",
-      "cid": "2",
+      "cid": "10",
       "timestamp": 1534550400000
     },
     {
@@ -68,7 +68,7 @@ export const testCategories = [
       "date": "2018-08-20",
       "monthCategory": "2018-8",
       "id": "_jjfice21k",
-      "cid": "3",
+      "cid": "2",
       "timestamp": 1534723200000
     }
   ]

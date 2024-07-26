@@ -60,7 +60,7 @@ class Home extends Component {
       const {data} = this.props
       const { currentDate, tabView } = this.state
       const items = toArray(data.items)
-      const categories = toArray(data.categories)
+      const categories = data.categories
       const itemsWithCategory = items.map(item => {
         item.category = categories[item.cid]
         return item
