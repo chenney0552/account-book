@@ -1,10 +1,10 @@
 import './App.css';
+import axios from 'axios'
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './containers/Home';
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import Create from './containers/Create';
-import { testItems, testCategories } from './testData';
 import { flatternArr, ID, parseToYearAndMonth } from './utility';
 
 export const AppContext = React.createContext()
@@ -12,10 +12,34 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      items: flatternArr(testItems),
-      categories: flatternArr(testCategories)
+      items: {},
+      categories: {},
+      currentDate: parseToYearAndMonth(),
     }
     this.actions = {
+      getInitialData:() => {
+        const { currentDate } = this.state
+        //const getURLWithData = `http://localhost:3004/items?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
+        const getURLWithData = `http://localhost:3004/items?monthCategory=2018-12&_sort=timestamp&_order=desc`;
+        console.log("getURLWithData", getURLWithData)
+        const promiseArr = [axios.get('http://localhost:3004/categories'), axios.get(getURLWithData)]
+        Promise.all(promiseArr).then(arr => {
+          const [ categories, items ] = arr
+          this.setState({
+            items: flatternArr(items.data),
+            categories: flatternArr(categories.data)
+          })
+        })
+      },
+      selectNewMonth:(year, month) => {
+        const getURLWithData = `http://localhost:3004/items?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
+        axios.get(getURLWithData).then(items => {
+          this.setState({
+            items: flatternArr(items.data),
+            currentDate: {year, month}
+          })
+        })
+      },
       deleteItem: (item) => {
         console.log('deleteItem called', item.id)
         delete this.state.items[item.id]
