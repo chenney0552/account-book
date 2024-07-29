@@ -41,10 +41,11 @@ class App extends Component {
         })
       },
       deleteItem: (item) => {
-        console.log('deleteItem called', item.id)
-        delete this.state.items[item.id]
-        this.setState({
-          items: this.state.items
+        axios.delete(`http://localhost:3004/items/${item.id}`).then(() => {
+          delete this.state.items[item.id]
+          this.setState({
+            items: this.state.items
+          })
         })
       },
       createItem: (data, categoryId) => {
