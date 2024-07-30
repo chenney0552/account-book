@@ -4,17 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../App.css'
 import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from "../utility";
 import PriceList from "../components/PriceList";
-import ViewTab from "../components/ViewTab";
 import MonthPicker from "../components/MonthPicker";
 import CreateBtn from "../components/CreateBtn";
 import TotalPrice from "../components/TotalPrice";
 import {Tabs, Tab} from "../components/Tabs"
 import Ionicon from 'react-ionicons'
-import { tab } from "@testing-library/user-event/dist/tab";
-import { AppContext } from "../App";
 import withContext from "../WithContext";
 import { withRouter } from "react-router-dom";
-import { toArray } from "../utility";
+import Loader from "../components/Loader";
 
 const tabsText = [LIST_VIEW, CHART_VIEW]
 
@@ -27,7 +24,9 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.props.actions.getInitialData()
+        this.props.actions.getInitialData().then(items => {
+            console.log('haha', items)
+        })
     }
 
     changeView = (index) => {
@@ -49,7 +48,7 @@ class Home extends Component {
     }
     render() {
       const {data} = this.props
-      const {items, categories, currentDate } = data
+      const {items, categories, currentDate, isLoading } = data
       const { tabView } = this.state
       const itemsWithCategory = Object.keys(items).map(id => {
         items[id].category = categories[items[id].cid]
@@ -91,6 +90,11 @@ class Home extends Component {
                 </div>
             </header>
             <div className="content-area py-3 px-3">
+                {
+                    isLoading && <Loader />
+                }
+                { !isLoading &&
+                <React.Fragment>
                 <Tabs activeIndex={0} onTabChange={this.changeView}>
                     <Tab>
                         <Ionicon
@@ -123,6 +127,8 @@ class Home extends Component {
                 {  tabView === CHART_VIEW &&
                     <h1>CHART VIEW</h1>
                 }
+            </React.Fragment>
+            }
             </div>   
             </React.Fragment>)
   }
