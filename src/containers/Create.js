@@ -20,6 +20,17 @@ class Create extends React.Component {
         }
     }
 
+    componentDidMount() {
+        const {id} = this.props.match.params
+        this.props.actions.getEditData(id).then(data => {
+            const {editItem, categories} = data
+            this.setState({
+                selectedTab: (id && editItem) ? categories[editItem.cid].type : TYPE_OUTCOME,
+                selectedCategory: (id && editItem) ? categories[editItem.cid] : null,
+            })
+        })
+    }
+
     tabChange = (index) => {
         this.setState({
             selectedTab: tabsText[index]
@@ -38,12 +49,14 @@ class Create extends React.Component {
 
     submitForm = (data, isEditMode) => {
         if (!isEditMode) {
-            this.props.actions.createItem(data, this.state.selectedCategory.id)
+                this.props.actions.createItem(data, this.state.selectedCategory.id).then(() => {
+                this.props.history.push('/')
+            })
         } else {
             // update
             this.props.actions.updateItem(data, this.state.selectedCategory.id)
+            this.props.history.push('/')
         }
-        this.props.history.push('/')
     }
 
     render() {

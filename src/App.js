@@ -1,10 +1,10 @@
 import './App.css';
+import axios from 'axios'
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './containers/Home';
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import Create from './containers/Create';
-import { testItems, testCategories } from './testData';
 import { flatternArr, ID, parseToYearAndMonth } from './utility';
 
 export const AppContext = React.createContext()
@@ -12,38 +12,116 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      items: flatternArr(testItems),
-      categories: flatternArr(testCategories)
+      items: {},
+      categories: {},
+      isLoading: false,
+      currentDate: parseToYearAndMonth(),
     }
+
+    const withLoading = (cb) => {
+      return (...args) => {
+        this.setState({
+          isLoading: true
+        })
+        return cb(...args)  
+      }
+    }
+
     this.actions = {
-      deleteItem: (item) => {
-        console.log('deleteItem called', item.id)
+      getInitialData: withLoading(async () => {
+        const { currentDate } = this.state
+        const getURLWithData = `http://localhost:3004/items?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`;
+        const results = await Promise.all([axios.get('http://localhost:3004/categories'), axios.get(getURLWithData)])
+        const [ categories, items ] = results
+        this.setState({
+          items: flatternArr(items.data),
+          categories: flatternArr(categories.data),
+          isLoading: false,
+        })
+        return items
+      }),
+      getEditData: withLoading(async (id) => {
+        const {items, categories} = this.state
+        let promiseArr = []
+        if (Object.keys(categories).length == 0) {
+          promiseArr.push(axios.get('http://localhost:3004/categories'))
+        }
+        const itemAlreadyFetched = Object.keys(items).indexOf(id) > -1
+
+        if (id && itemAlreadyFetched) {
+          const getURLWithID = `http://localhost:3004/items/${id}`
+          promiseArr.push(axios.get(getURLWithID))
+        }
+        
+        const [fetchedCategories, editItem] = await Promise.all(promiseArr)
+        const finalCategories = fetchedCategories ? flatternArr(fetchedCategories.data) : categories
+        const finalItem = editItem ? editItem.data : items[id]
+
+        if (id) {
+          this.setState({
+            categories: finalCategories,
+            isLoading: false,
+            items: {...this.state.items, [id]: finalItem},
+          })
+        } else {
+          this.setState({
+            categories: finalCategories,
+            isLoading: false,
+          })          
+        }
+
+        return {
+          categories: finalCategories,
+          editItem: finalItem,
+        }
+      }),
+      selectNewMonth:withLoading(async (year, month) => {
+        const getURLWithData = `http://localhost:3004/items?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`;
+        const items = await axios.get(getURLWithData)
+        this.setState({
+          items: flatternArr(items.data),
+          currentDate: {year, month},
+          isLoading: false,
+        })
+        return items
+      }),
+      deleteItem: withLoading(async (item) => {
+        this.setState({
+          isLoading: true,
+        })
+        const deleteItem = await axios.delete(`http://localhost:3004/items/${item.id}`)
         delete this.state.items[item.id]
         this.setState({
           items: this.state.items
         })
-      },
-      createItem: (data, categoryId) => {
+        return deleteItem
+      }),
+      createItem: withLoading(async (data, categoryId) => {
         const newId = ID()
         const parsedDate = parseToYearAndMonth(data.date)
         data.monthCategory = `${parsedDate.year}-${parsedDate.month}`
         data.timestamp = new Date(data.date).getTime()
-        const newItem = {...data, id: newId, cid: categoryId}
+        // const newItem = {...data, id: newId, cid: categoryId}
+        const newItem = await axios.post('http://localhost:3004/items', {...data, id: newId, cid: categoryId})
         this.setState({
-          items: {...this.state.items, [newId]: newItem}
+          items: {...this.state.items, [newId]: newItem.data},
+          isLoading: false
         })
-        console.log(newItem)
-      },
-      updateItem: (item, updatedCategoryId) => {
-        const modifiedItem = {
+        return newItem.data
+      }),
+      updateItem: withLoading(async (item, updatedCategoryId) => {
+        const updatedData = {
           ...item,
           cid: updatedCategoryId,
           timestamp: new Date(item.date).getTime()
         }
+        const modifiedItem = await axios.put(`http://localhost:3004/items/${item.id}`, updatedData)
         this.setState({
-          items: {...this.state.items, [modifiedItem.id]: modifiedItem}
+          items: {...this.state.items, [modifiedItem.id]: modifiedItem.data},
+          isLoading: false
         })
-      }
+        return modifiedItem.data
+      })
     }
   }
 

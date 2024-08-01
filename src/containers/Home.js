@@ -4,27 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../App.css'
 import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from "../utility";
 import PriceList from "../components/PriceList";
-import ViewTab from "../components/ViewTab";
 import MonthPicker from "../components/MonthPicker";
 import CreateBtn from "../components/CreateBtn";
 import TotalPrice from "../components/TotalPrice";
 import {Tabs, Tab} from "../components/Tabs"
 import Ionicon from 'react-ionicons'
-import { tab } from "@testing-library/user-event/dist/tab";
-import { AppContext } from "../App";
 import withContext from "../WithContext";
 import { withRouter } from "react-router-dom";
-import { toArray } from "../utility";
-
-const items = []
-
-const newItem = {
-    "id": 4,
-    "title": "new added item",
-    "price": 300,
-    "date": "2018-10-10",
-    "cid": 1
-}
+import Loader from "../components/Loader";
 
 const tabsText = [LIST_VIEW, CHART_VIEW]
 
@@ -32,20 +19,23 @@ class Home extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            items,
-            currentDate: parseToYearAndMonth(),
             tabView: tabsText[0],
         }
     }
+
+    componentDidMount() {
+        this.props.actions.getInitialData().then(items => {
+            console.log('haha', items)
+        })
+    }
+
     changeView = (index) => {
         this.setState({
             tabView: tabsText[index],
         })
     }
     changeDate = (year, month) => {
-        this.setState({
-            currentDate: {year, month}
-        })
+        this.props.actions.selectNewMonth(year, month)
     }
     modifyItem = (modifiedItem) => {
         this.props.history.push(`/edit/${modifiedItem.id}`)
@@ -58,18 +48,15 @@ class Home extends Component {
     }
     render() {
       const {data} = this.props
-      const { currentDate, tabView } = this.state
-      const items = toArray(data.items)
-      const categories = data.categories
-      const itemsWithCategory = items.map(item => {
-        item.category = categories[item.cid]
-        return item
-      }).filter(item => {
-        return item.date.includes((`${currentDate.year}-${padLeft(currentDate.month)}`))
-    })
+      const {items, categories, currentDate, isLoading } = data
+      const { tabView } = this.state
+      const itemsWithCategory = Object.keys(items).map(id => {
+        items[id].category = categories[items[id].cid]
+        return items[id]
+      })
+      console.log("itemsWithCategory", items)
       let totalIncome = 0, totalOutcome = 0
       itemsWithCategory.forEach(item => {
-          console.log(item)
           if (item.category !== null && item.category.type === TYPE_OUTCOME) {
               totalOutcome += item.price
           } else {
@@ -103,6 +90,11 @@ class Home extends Component {
                 </div>
             </header>
             <div className="content-area py-3 px-3">
+                {
+                    isLoading && <Loader />
+                }
+                { !isLoading &&
+                <React.Fragment>
                 <Tabs activeIndex={0} onTabChange={this.changeView}>
                     <Tab>
                         <Ionicon
@@ -135,6 +127,8 @@ class Home extends Component {
                 {  tabView === CHART_VIEW &&
                     <h1>CHART VIEW</h1>
                 }
+            </React.Fragment>
+            }
             </div>   
             </React.Fragment>)
   }
