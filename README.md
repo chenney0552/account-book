@@ -12,7 +12,7 @@ Frontend and UI: React 16, Context, High order component
 
 React tool: Ionicon, ReactRouter, Recharts, Bootstrap
 
-Backend and testing: Jest, Enzyme, JsonServer, Axios
+Backend and testing: Jest, Enzyme, JsonServer, Axios, leancloud
 
 ## Develop Path
 
